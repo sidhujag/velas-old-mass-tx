@@ -22,27 +22,23 @@ async function send(privateKey: string, to_addr: string) {
     let unspents = [];
     try {
         unspents = await client.wallet.getUnspents(wallet_addr);
-        console.log("Unspent: " + unspents[0].value);
     } catch(e) {
         console.log("Error in getUnspents");
         unspents = [];
         // throw "Error in getUnspents";
     }
 
-    console.log("Unspent: " + unspents[0].value);
-
     if (unspents.length == 0 || unspents[0].value <= 0) {
         return 0;
     }
 
     let new_count = unspents.length > 200 ? 200 : unspents.length;
-    console.log("Total tx: " + new_count);
+    console.log("Total UTXO: " + unspents.length  + " Total tx: " + new_count);
 
     let new_unspents = [];
     let money = 0;
 
     for (let i = 0; i < new_count; i++) {
-        // console.log("Current i " + i);
         new_unspents.push(unspents[i]);
         money = money + Number(unspents[i].value);
     }
@@ -52,7 +48,7 @@ async function send(privateKey: string, to_addr: string) {
     
     try {
         let satoshiAmount = VLXtoSatoshi((amount));
-        // console.log("VLXtoSatoshi: " + satoshiAmount);
+        console.log("VLXtoSatoshi: " + satoshiAmount);
     } catch(e) {
         console.log("Error in VLXtoSatoshi");
 
